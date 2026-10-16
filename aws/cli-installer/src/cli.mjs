@@ -78,7 +78,7 @@ export function parseCli(argv) {
   // Dashboards / Application
   program
     .option('--dashboards-url <url>', 'Reuse an existing OpenSearch UI URL')
-    .option('--app-name <name>', 'Name for new OpenSearch Application');
+    .option('--app-name <name>', 'Name for new Amazon OpenSearch Application');
 
   // Pipeline tuning
   program

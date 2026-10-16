@@ -76,7 +76,7 @@ async function osuiDelete(base, path, region) {
 export async function initOpenSearchUI(cfg) {
   const base = cfg.appEndpoint || cfg.dashboardsUrl;
   if (!base) {
-    printWarning('No OpenSearch Application endpoint — skipping OpenSearch UI init');
+    printWarning('No Amazon OpenSearch Application endpoint — skipping OpenSearch UI init');
     return;
   }
   const region = cfg.region;

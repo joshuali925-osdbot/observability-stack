@@ -146,11 +146,11 @@ export async function destroy(cfg) {
     const { ApplicationSummaries } = await os.send(new ListApplicationsCommand({}));
     const app = (ApplicationSummaries || []).find(a => a.name === pipelineName);
     if (app) {
-      const spinner = createSpinner('Deleting OpenSearch Application...');
+      const spinner = createSpinner('Deleting Amazon OpenSearch Application...');
       await os.send(new DeleteApplicationCommand({ id: app.id }));
       spinner.stop(`Application ${app.id} deleted`);
     } else {
-      printInfo('No OpenSearch Application found');
+      printInfo('No Amazon OpenSearch Application found');
     }
   } catch (e) { printWarning(`Application: ${e.message}`); }
 

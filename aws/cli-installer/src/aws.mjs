@@ -1159,8 +1159,8 @@ export async function setupDashboards(cfg) {
   }
   cfg.dashboardsUrl = cfg.appEndpoint || '';
   if (!cfg.dashboardsUrl) {
-    printWarning('No OpenSearch Application endpoint available');
-    printInfo('Create an OpenSearch Application in the AWS console to get the UI URL');
+    printWarning('No Amazon OpenSearch Application endpoint available');
+    printInfo('Create an Amazon OpenSearch Application in the AWS console to get the UI URL');
     return;
   }
   printSuccess(`URL: ${cfg.dashboardsUrl}`);
@@ -1304,7 +1304,7 @@ export async function createConnectedDataSource(cfg) {
  */
 export async function createOpenSearchApplication(cfg) {
   const appName = cfg.appName;
-  printStep(`Creating OpenSearch Application '${appName}'...`);
+  printStep(`Creating Amazon OpenSearch Application '${appName}'...`);
 
   const client = new OpenSearchClient({ region: cfg.region });
 
@@ -1364,7 +1364,7 @@ export async function createOpenSearchApplication(cfg) {
       } catch { /* best effort */ }
       return;
     }
-    printWarning(`Could not create OpenSearch Application: ${err.message}`);
+    printWarning(`Could not create Amazon OpenSearch Application: ${err.message}`);
     printInfo('You can create one manually in the AWS console');
   }
 }
@@ -1388,13 +1388,13 @@ async function fetchAppEndpoint(client, cfg) {
         return; // endpoint logged by setupDashboards
       }
       if (resp.status && !['CREATING', 'UPDATING', 'ACTIVE'].includes(resp.status)) {
-        printWarning(`OpenSearch Application status is ${resp.status} — endpoint may not become available`);
+        printWarning(`Amazon OpenSearch Application status is ${resp.status} — endpoint may not become available`);
         return;
       }
     } catch { /* keep polling */ }
     await sleep(interval);
   }
-  printWarning('Timed out waiting for the OpenSearch Application endpoint');
+  printWarning('Timed out waiting for the Amazon OpenSearch Application endpoint');
 }
 
 /**
@@ -2006,7 +2006,7 @@ function arnToType(arn) {
   if (/^arn:aws:iam:.*:role\//.test(arn)) return 'IAM Role';
   if (/^arn:aws:aps:.*:workspace\//.test(arn)) return 'APS Workspace';
   if (/^arn:aws:opensearch:.*:datasource\//.test(arn)) return 'DQ Data Source';
-  if (/^arn:aws:opensearch:.*:application\//.test(arn)) return 'OpenSearch Application';
+  if (/^arn:aws:opensearch:.*:application\//.test(arn)) return 'Amazon OpenSearch Application';
   return 'Resource';
 }
 
@@ -2043,7 +2043,7 @@ export async function enrichResourceNames(region, resources) {
     }
   }
   // OpenSearch Applications: resolve name from ID
-  const appResources = resources.filter((r) => r.type === 'OpenSearch Application');
+  const appResources = resources.filter((r) => r.type === 'Amazon OpenSearch Application');
   if (appResources.length) {
     try {
       const client = new OpenSearchClient({ region });
@@ -2070,9 +2070,9 @@ async function supplementApplications(region, stacks) {
       if (!app.name || !app.arn) continue;
       const resources = stacks.get(app.name);
       if (!resources) continue;
-      const alreadyPresent = resources.some((r) => r.type === 'OpenSearch Application');
+      const alreadyPresent = resources.some((r) => r.type === 'Amazon OpenSearch Application');
       if (!alreadyPresent) {
-        resources.push({ arn: app.arn, type: 'OpenSearch Application' });
+        resources.push({ arn: app.arn, type: 'Amazon OpenSearch Application' });
       }
     }
   } catch { /* best effort */ }
@@ -2155,7 +2155,7 @@ export async function describeResource(region, resource) {
         if (c.type) entries.push(['Type', c.type]);
         if (c.createdDate) entries.push(['Created', new Date(c.createdDate).toISOString()]);
       }
-    } else if (type === 'OpenSearch Application') {
+    } else if (type === 'Amazon OpenSearch Application') {
       const client = new OpenSearchClient({ region });
       const appId = name;
       const resp = await client.send(new GetApplicationCommand({ id: appId }));

@@ -108,7 +108,7 @@ async function stepCore(cfg, session) {
     printSubStep(`APS workspace: ${theme.accent(cfg.apsWorkspaceAlias)}`);
     printSubStep(`Connected Data Source role: ${theme.accent(cfg.connectedDataSourceRoleName)}`);
     printSubStep(`Connected Data Source: ${theme.accent(cfg.connectedDataSourceName)}`);
-    printSubStep(`OpenSearch Application: ${theme.accent(cfg.appName)}`);
+    printSubStep(`Amazon OpenSearch Application: ${theme.accent(cfg.appName)}`);
   }
 }
 
@@ -520,7 +520,7 @@ async function stepApp(cfg) {
   if (cfg.mode !== 'advanced') return 'skip';
 
   printStep('OpenSearch UI');
-  printInfo('The OpenSearch Application provides a unified dashboard for your observability data');
+  printInfo('The Amazon OpenSearch Application provides a unified dashboard for your observability data');
   console.error();
 
   while (true) {
@@ -528,7 +528,7 @@ async function stepApp(cfg) {
     const choice = await eSelect({
       message: 'Create new or reuse existing?',
       choices: [
-        { name: `Create new ${theme.muted('\u2014 creates an OpenSearch Application with data sources')}`, value: 'create' },
+        { name: `Create new ${theme.muted('\u2014 creates an Amazon OpenSearch Application with data sources')}`, value: 'create' },
         { name: 'Reuse existing', value: 'reuse' },
       ],
       default: cfg.dashboardsAction || 'create',
@@ -539,7 +539,7 @@ async function stepApp(cfg) {
       cfg.dashboardsAction = 'reuse';
 
       const apps = await fetchWithSpinner(
-        'Loading OpenSearch Applications',
+        'Loading Amazon OpenSearch Applications',
         () => listApplications(cfg.region),
       );
 
